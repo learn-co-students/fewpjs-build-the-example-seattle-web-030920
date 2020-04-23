@@ -27,6 +27,9 @@ function likeCallback(e) {
     })
     .catch(function(error) {
       document.getElementById("modal").className = "";
+      setTimeout(function(){
+        document.getElementById("modal").className = "hidden";
+      }, 5000)
     });
 }
 
