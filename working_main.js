@@ -7,7 +7,7 @@ const errorDiv = document.getElementById("modal")
 errorDiv.classList.add("hidden")
 
 const heartBtns = document.querySelectorAll(".like-glyph") // this will return object const heartBtns require for in to iterate = document.getElementsByClassName("like-glyph")
-
+// document.getElementsByClassName
 
 likeHandler()
 // invoke mimicServerCall
