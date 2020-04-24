@@ -1,53 +1,64 @@
 // Defining text characters for the empty and full hearts for you to use later.
-
-// constants
 const EMPTY_HEART = '♡'
 const FULL_HEART = '♥'
-const errorDiv = document.getElementById("modal")
-errorDiv.classList.add("hidden")
-
-const heartBtns = document.querySelectorAll(".like-glyph") // this will return object const heartBtns require for in to iterate = document.getElementsByClassName("like-glyph")
-
-
-likeHandler()
-// invoke mimicServerCall
-const pError = document.createElement("p")
-errorDiv.appendChild(pError)
+const heartElements = document.querySelectorAll(".like-glyph")
+const errorModal = document.getElementById("modal") 
+// placeholder variables for current element 
+let clickedHeart 
 // Your JavaScript code goes here!
+// add hidden class to modal
+function errorTheModal() {
+  const errorMsg = document.createElement("p")
+  errorModal.classList.add("hidden")
+  errorMsg.innerText = "Random server error. Try again."
+  errorModal.appendChild(errorMsg)
+}
 
-function likeHandler() {
-  heartBtns.forEach(btn => {
-    btn.addEventListener("click", function(e){
-      
-      mimicServerCall()
-      .then(resp => {
-        if (e.target.innerText= FULL_HEART){
-          e.target.innerText= EMPTY_HEART
-        } else {
-          e.target.innerText= FULL_HEART
-        }
-        e.target.classList.toggle("activated-heart")
 
-      })
-      .catch(resp => errorHandler(resp))
-    })
+// event Listeners 
+
+function clickHeart(){
+
+  heartElements.forEach(heart => {
+    heart.onclick = function() {
+      clickedHeart = heart
+      serverHandler()
+    }
   })
 }
 
-// handlers 
 
 
-function errorHandler(resp) {
+// event Handlers 
 
-  pError.innerText = resp 
-
-  setTimeout(function() {errorDiv.classList.toggle("hidden")}, 5000)
-  errorDiv.classList.toggle("hidden")
+function serverHandler(){
+  mimicServerCall()
+  .then(heartHandler)
+  .catch(errorHandler)
+}
+function heartHandler() {
+  if (!(clickedHeart.innerText == FULL_HEART)) {
+    clickedHeart.classList.add("activated-heart")
+    clickedHeart.innerText = FULL_HEART
+  } else {
+    clickedHeart.innerText = EMPTY_HEART
+    clickedHeart.classList.toggle("activated-heart")
+  }
 }
 
+function errorHandler(resp){
   
+  if (resp == "Random server error. Try again.") {
+    toggleError()
+    setTimeout(function(){toggleError()}, 5000)
+  } 
+}
 
+// callbacks for Handlers
 
+function toggleError(){
+  errorModal.classList.toggle("hidden")
+}
 
 //------------------------------------------------------------------------------
 // Ignore after this point. Used only for demo purposes
@@ -66,3 +77,7 @@ function mimicServerCall(url="http://mimicServer.example.com", config={}) {
   });
 }
 
+
+// call functions 
+errorTheModal()
+clickHeart()
