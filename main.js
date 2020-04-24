@@ -2,8 +2,32 @@
 const EMPTY_HEART = '♡'
 const FULL_HEART = '♥'
 
-// Your JavaScript code goes here!
+const modal = document.getElementById("modal")
+let likesList = document.querySelectorAll(".like");
 
+function likeCallback(e) {
+  let heart = e.target;
+  mimicServerCall()
+    .then(function(){
+      // check status of heart and switch to opposite style
+      ((heart.innerText == EMPTY_HEART) ? (heart.innerText = FULL_HEART) : (heart.innerText = EMPTY_HEART))
+      heart.classList.toggle("activated-heart")
+    })
+    .catch(function(error) {
+      toggleError();
+      setTimeout(toggleError, 5000)
+
+    });
+}
+
+
+function toggleError(){
+  modal.classList.toggle("hidden");
+}
+
+for (let heart of likesList) {
+  heart.addEventListener("click", likeCallback);
+}
 
 
 
