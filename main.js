@@ -4,6 +4,30 @@ const FULL_HEART = '♥'
 
 // Your JavaScript code goes here!
 
+let heart = document.querySelectorAll("span.like-glyph")
+heart.forEach(element => element.innerHTML = '♡')
+
+for (let glyphicon of heart){
+  glyphicon.addEventListener('click', function(e){
+  mimicServerCall()
+  .then(json => {
+    if (glyphicon.textContent == '♡'){
+    glyphicon.innerHTML = '♥'
+    glyphicon.classList.toggle("activated-heart")
+  }
+  else{
+    glyphicon.innerHTML = '♡'
+    glyphicon.classList.toggle("activated-heart")
+  }
+})
+.catch(error=> {
+    document.body.querySelector("div > h2").innerText = error.message
+    setTimeout(() => {
+      document.getElementById('modal').classList.toggle("hidden")}, 5000)
+    document.getElementById('modal').classList.toggle("hidden")
+  })
+})
+}
 
 
 
